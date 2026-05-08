@@ -1,0 +1,1 @@
+import{r as s}from"./request-7ec677d3.js";function a(t,r){return s({url:"/api/user/exams/start",method:"post",data:{paperId:t,studentName:r}})}function u(t,r){return s({url:`/api/user/exams/${t}/submit`,method:"post",data:r})}function m(t){return s({url:`/api/user/exams/${t}`,method:"get"})}export{u as a,m as g,a as s};
