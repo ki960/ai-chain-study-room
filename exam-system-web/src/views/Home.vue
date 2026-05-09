@@ -413,7 +413,7 @@ const goToRanking = () => {
 }
 
 const goToAnalysis = () => {
-  router.push('/analysis')
+  router.push('/ai-analysis')
 }
 
 const goToVideos = () => {

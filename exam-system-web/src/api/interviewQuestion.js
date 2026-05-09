@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// »ñÈ¡ÆóÒµÕæÌâÁÐ±í
+// ï¿½ï¿½È¡ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 export function getInterviewQuestions(params) {
   return request({
     url: '/api/interview-questions/list',
@@ -9,7 +9,7 @@ export function getInterviewQuestions(params) {
   })
 }
 
-// »ñÈ¡ÕæÌâÏêÇé
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 export function getInterviewQuestionDetail(id) {
   return request({
     url: `/api/interview-questions/${id}`,
@@ -17,7 +17,7 @@ export function getInterviewQuestionDetail(id) {
   })
 }
 
-// ÉÏ´«ÆóÒµÕæÌâ
+// ï¿½Ï´ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½
 export function uploadQuestion(data) {
   return request({
     url: '/api/user-contributions/upload',
@@ -26,7 +26,7 @@ export function uploadQuestion(data) {
   })
 }
 
-// »ñÈ¡ÈÈÃÅÌâÄ¿
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
 export function getHotQuestions(limit = 10) {
   return request({
     url: '/api/interview-questions/hot',
@@ -35,7 +35,7 @@ export function getHotQuestions(limit = 10) {
   })
 }
 
-// »ñÈ¡×îÐÂÌâÄ¿
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
 export function getLatestQuestions(limit = 10) {
   return request({
     url: '/api/interview-questions/latest',
@@ -44,7 +44,7 @@ export function getLatestQuestions(limit = 10) {
   })
 }
 
-// Ôö¼Óä¯ÀÀ´ÎÊý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 export function incrementViewCount(id) {
   return request({
     url: `/api/interview-questions/${id}/view`,
@@ -52,7 +52,7 @@ export function incrementViewCount(id) {
   })
 }
 
-// »ñÈ¡¼¼Êõ·½ÏòÍ³¼Æ
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½
 export function getDirectionStats() {
   return request({
     url: '/api/interview-questions/stats/direction',
@@ -60,7 +60,7 @@ export function getDirectionStats() {
   })
 }
 
-// »ñÈ¡¹«Ë¾Í³¼Æ
+// ï¿½ï¿½È¡ï¿½ï¿½Ë¾Í³ï¿½ï¿½
 export function getCompanyStats() {
   return request({
     url: '/api/interview-questions/stats/company',
@@ -68,7 +68,7 @@ export function getCompanyStats() {
   })
 }
 
-// Ä£ÄâÃæÊÔÏà¹ØAPI
+// Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½API
 export function startMockInterview(data) {
   return request({
     url: '/api/mock-interview/start',
@@ -107,7 +107,7 @@ export function getUserInterviewRecords(userId, params) {
   })
 }
 
-// ÑûÇëÂëÏà¹ØAPI
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½API
 export function getInterviewCodes(params) {
   return request({
     url: '/api/interview/codes',
@@ -154,7 +154,7 @@ export function requestInterviewCode(data) {
   })
 }
 
-// ÓÃ»§»ý·ÖÏà¹ØAPI
+// ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½API
 export function getUserCredits(userId) {
   return request({
     url: `/api/user-interview-credits/user/${userId}`,
@@ -169,7 +169,7 @@ export function getActiveCredits(userId) {
   })
 }
 
-// »ñÈ¡ÃæÊÔ½á¹û
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
 export function getInterviewResult(interviewId) {
   return request({
     url: `/api/interview/result/${interviewId}`,
@@ -177,7 +177,7 @@ export function getInterviewResult(interviewId) {
   })
 }
 
-// »ñÈ¡ÓÃ»§ÃæÊÔÀúÊ·
+// ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê·
 export function getUserInterviewHistory(params) {
   return request({
     url: '/api/interview/history',
@@ -186,7 +186,7 @@ export function getUserInterviewHistory(params) {
   })
 }
 
-// »ñÈ¡ÃæÊÔÍ³¼ÆÊý¾Ý
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 export function getInterviewStatistics() {
   return request({
     url: '/api/interview/statistics',
@@ -194,7 +194,7 @@ export function getInterviewStatistics() {
   })
 }
 
-// ·ÖÏíÃæÊÔ½á¹û
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
 export function shareInterviewResult(interviewId, shareType) {
   return request({
     url: '/api/interview/share',
@@ -206,7 +206,7 @@ export function shareInterviewResult(interviewId, shareType) {
   })
 }
 
-// »ñÈ¡»ý·ÖÀúÊ·
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê·
 export function getCreditsHistory() {
   return request({
     url: '/api/interview/credits/history',

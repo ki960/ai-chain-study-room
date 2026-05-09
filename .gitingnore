@@ -1,0 +1,5 @@
+# Maven编译产物
+target/
+*.class
+*.jar
+*.war

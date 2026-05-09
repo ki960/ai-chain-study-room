@@ -1,4 +1,4 @@
-<template>
+·<template>
   <div class="mock-interview">
     <!-- 面试配置页面 -->
     <div v-if="currentStep === 'config'" class="interview-config">
