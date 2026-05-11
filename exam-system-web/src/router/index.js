@@ -198,6 +198,12 @@ const routes = [
     name: 'PendingQuestionManage', // 路由名称
     component: () => import('../views/PendingQuestionManage.vue'), // 组件路径
     meta: { title: '用户上传审核' } // 页面标题
+  },
+  {
+    path: '/ai-analysis',
+    name: 'AiAnalysis',
+    component: () => import('../views/AiAnalysis.vue'),
+    meta: { title: '学生学习分析报告' }
   }
 ]
 
