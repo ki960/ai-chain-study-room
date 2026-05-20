@@ -1,17 +1,23 @@
 package com.atguigu.exam.controller.admin;
 
+import com.atguigu.exam.common.CacheConstants;
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Question;
 import com.atguigu.exam.service.QuestionService;
+import com.atguigu.exam.utils.RedisUtils;
 import com.atguigu.exam.vo.QuestionQueryVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.plugin.Interceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +48,9 @@ import java.util.List;
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
-    
+    @Autowired
+    private RedisUtils redisUtils;
+
     /**
      * 分页查询题目列表（支持多条件筛选）
      * 
@@ -193,8 +201,11 @@ public class QuestionController {
     @Operation(summary = "按分类查询题目", description = "获取指定分类下的所有题目列表")  // API描述
     public Result<List<Question>> getQuestionsByCategory(
             @Parameter(description = "分类ID") @PathVariable Long categoryId) {
-
-        return Result.success(null);
+        LambdaQueryWrapper<Question> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Question::getCategoryId, categoryId);
+        List<Question> questions = questionService.list(queryWrapper);
+        log.info("查询分类{}下的题目列表成功：{}", categoryId, questions);
+        return Result.success(questions);
     }
     
     /**
@@ -209,7 +220,11 @@ public class QuestionController {
     @Operation(summary = "按难度查询题目", description = "获取指定难度等级的题目列表")  // API描述
     public Result<List<Question>> getQuestionsByDifficulty(
             @Parameter(description = "难度等级，可选值：EASY(简单)/MEDIUM(中等)/HARD(困难)") @PathVariable String difficulty) {
-        return Result.success(null);
+        LambdaQueryWrapper<Question> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Question::getDifficulty, difficulty);
+        List<Question> questions = questionService.list(queryWrapper);
+        log.info("查询{}难度下的题目列表成功：{}", difficulty, questions);
+        return Result.success(questions);
     }
     
     /**
@@ -236,8 +251,22 @@ public class QuestionController {
             @Parameter(description = "需要获取的题目数量", example = "10") @RequestParam(defaultValue = "10") Integer count,
             @Parameter(description = "分类ID限制条件，可选") @RequestParam(required = false) Long categoryId,
             @Parameter(description = "难度限制条件，可选值：EASY/MEDIUM/HARD") @RequestParam(required = false) String difficulty) {
-
-        return Result.success(null);
+        LambdaQueryWrapper<Question> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(!ObjectUtils.isEmpty(categoryId), Question::getCategoryId, categoryId);
+        queryWrapper.eq(!ObjectUtils.isEmpty(difficulty), Question::getDifficulty, difficulty);
+        List<Question> questions = questionService.list(queryWrapper);
+        if (questions.size() < count) {
+            return Result.error("题目数量不足");
+        }
+        List<Question> randomQuestions = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            int randomIndex = (int) (Math.random() * questions.size());
+            Question question = questions.get(randomIndex);
+            questions.remove(randomIndex);
+            randomQuestions.add(question);
+        }
+        log.info("随机获取{}道题目成功：{}", count, randomQuestions);
+        return Result.success(randomQuestions);
     }
 
     /**
@@ -258,8 +287,14 @@ public class QuestionController {
     @PostMapping("/popular/refresh")
     @Operation(summary = "刷新热门题目缓存", description = "管理员功能，重置或初始化热门题目的访问计数")
     public Result<Integer> refreshPopularQuestions() {
-
-        return Result.error("刷新热门题目缓存失败");
+        try {
+            Integer count = (Integer) redisUtils.get(CacheConstants.QUESTION_VIEW_COUNT_KEY);
+            redisUtils.delete(CacheConstants.POPULAR_QUESTIONS_KEY);
+            return Result.success(count);
+        }catch (Exception e){
+            log.error("刷新热门题目缓存失败：{}", e.getMessage());
+            return Result.error("刷新热门题目缓存失败");
+        }
     }
 
 } 

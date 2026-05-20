@@ -33,7 +33,7 @@ public class CategoryController {
     @GetMapping  // 处理GET请求
     @Operation(summary = "获取分类列表", description = "获取所有题目分类列表，包含每个分类下的题目数量统计")  // API描述
     public Result<List<Category>> getCategories() {
-        List<Category> categoriesList =categoryService.findCategoryList();
+        List<Category> categoriesList = categoryService.findCategoryList();
         log.info("获取分类列表成功：{}", categoriesList);
         return Result.success(categoriesList);
     }

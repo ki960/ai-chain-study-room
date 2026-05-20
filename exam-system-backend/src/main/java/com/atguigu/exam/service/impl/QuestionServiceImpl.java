@@ -258,6 +258,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
+    @Transactional
     public String importQuestions(List<QuestionImportVo> questions) {
         if (questions.isEmpty())
             return "导入数据为空";
@@ -348,6 +349,45 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         }
 
         throw new RuntimeException("ai生成题目结果结构错误，无法进行解析，具体数据为：{}".formatted(response));
+    }
+
+    @Override
+    public void validateQuestions(List<QuestionImportVo> questions) {
+        for(QuestionImportVo questionImportVo : questions){
+            if(questionImportVo.getTitle() == null || questionImportVo.getTitle().isEmpty())
+                throw new RuntimeException("题目标题不能为空");
+            if(questionImportVo.getType() == null || questionImportVo.getType().isEmpty())
+                throw new RuntimeException("题目类型不能为空");
+            if(questionImportVo.getCategoryId() == null || questionImportVo.getCategoryId() <= 0)
+                throw new RuntimeException("题目分类不能为空");
+            if(questionImportVo.getDifficulty() == null || questionImportVo.getDifficulty().isEmpty())
+                throw new RuntimeException("题目难度不能为空");
+            if(questionImportVo.getScore() == null || questionImportVo.getScore() <= 0)
+                throw new RuntimeException("题目分数不能为空");
+            if(questionImportVo.getAnalysis() == null || questionImportVo.getAnalysis().isEmpty())
+                throw new RuntimeException("题目解析不能为空");
+
+            if(questionImportVo.getType().equals("CHOICE")){
+                if(questionImportVo.getChoices() == null || questionImportVo.getChoices().isEmpty())
+                    throw new RuntimeException("选择题选项不能为空");
+                for(QuestionImportVo.ChoiceImportDto choice : questionImportVo.getChoices()){
+                    if(choice.getContent() == null || choice.getContent().isEmpty())
+                        throw new RuntimeException("选择题选项内容不能为空");
+                    if(choice.getSort() == null || choice.getSort() <= 0)
+                        throw new RuntimeException("选择题选项排序序号不能为空");
+                }
+            }
+            if(questionImportVo.getType().equals("JUDGE")){
+                if(questionImportVo.getAnswer() == null || questionImportVo.getAnswer().isEmpty())
+                    throw new RuntimeException("判断题答案不能为空");
+            }
+            if(questionImportVo.getType().equals("TEXT")){
+                if(questionImportVo.getAnswer() == null || questionImportVo.getAnswer().isEmpty())
+                    throw new RuntimeException("简答题答案不能为空");
+                if(questionImportVo.getKeywords() == null || questionImportVo.getKeywords().isEmpty())
+                    throw new RuntimeException("简答题关键词不能为空");
+            }
+        }
     }
 
     public void incrementQuestionScore(Long questionId) {

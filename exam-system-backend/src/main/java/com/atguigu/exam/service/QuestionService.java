@@ -56,4 +56,6 @@ public interface QuestionService extends IService<Question> {
     String importQuestions(List<QuestionImportVo> questions);
 
     List<QuestionImportVo> aiGenerateQuestions(AiGenerateRequestVo request) throws InterruptedException;
+
+    void validateQuestions(List<QuestionImportVo> questions);
 } 

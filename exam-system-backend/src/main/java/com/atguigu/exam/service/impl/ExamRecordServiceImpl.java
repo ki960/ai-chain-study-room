@@ -3,6 +3,7 @@ package com.atguigu.exam.service.impl;
 import com.atguigu.exam.entity.AnswerRecord;
 import com.atguigu.exam.entity.ExamRecord;
 import com.atguigu.exam.entity.Paper;
+import com.atguigu.exam.entity.Question;
 import com.atguigu.exam.mapper.AnswerRecordMapper;
 import com.atguigu.exam.mapper.ExamRecordMapper;
 import com.atguigu.exam.service.ExamRecordService;
@@ -84,5 +85,25 @@ public class ExamRecordServiceImpl extends ServiceImpl<ExamRecordMapper, ExamRec
     @Override
     public List<ExamRankingVO> customGetRanking(Integer paperId, Integer limit) {
         return examRecordMapper.customQueryRanking(paperId,limit);
+    }
+
+    @Override
+    public ExamRecord customGetExamRecordById(Integer id) {
+        ExamRecord examRecord = getById(id);
+        if (examRecord == null)
+            throw new RuntimeException("考试记录不存在！");
+        Paper paper = paperService.customPaperDetailById(examRecord.getExamId());
+        examRecord.setPaper(paper);
+
+        LambdaQueryWrapper<AnswerRecord> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(AnswerRecord::getExamRecordId,id);
+        List<AnswerRecord> answerRecords = answerRecordMapper.selectList(lambdaQueryWrapper);
+        if(!ObjectUtils.isEmpty(answerRecords)){
+            List<Long> questionIds = paper.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
+            answerRecords.sort((o1, o2) -> questionIds.indexOf(o1.getQuestionId()) - questionIds.indexOf(o2.getQuestionId()));
+            examRecord.setAnswerRecords(answerRecords);
+        }
+
+        return examRecord;
     }
 }

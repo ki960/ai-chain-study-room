@@ -3,6 +3,7 @@ package com.atguigu.exam.controller.user;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.ExamRecord;
+import com.atguigu.exam.service.ExamRecordService;
 import com.atguigu.exam.service.ExamService;
 import com.atguigu.exam.vo.StartExamVo;
 import com.atguigu.exam.vo.SubmitAnswerVo;
@@ -28,6 +29,8 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+    @Autowired
+    private ExamRecordService examRecordService;
 
 
     /**
@@ -78,7 +81,7 @@ public class ExamController {
     @Operation(summary = "查询考试记录详情", description = "获取指定考试记录的详细信息，包括答题情况和得分")  // API描述
     public Result<ExamRecord> getExamRecordById(
             @Parameter(description = "考试记录ID") @PathVariable Integer id) {
-        ExamRecord examRecord = examService.customGetExamRecordById(id);
+        ExamRecord examRecord = examRecordService.customGetExamRecordById(id);
         log.info("获取试卷详情信息接口调用成功！数据为：{}",examRecord);
         return Result.success(examRecord);
     }
@@ -89,6 +92,8 @@ public class ExamController {
     @GetMapping("/records")  // 处理GET请求
     @Operation(summary = "获取考试记录列表", description = "获取所有考试记录列表，包含基本信息和成绩")  // API描述
     public Result<List<ExamRecord>> getMyRecords() {
-        return Result.success(null);
+        List<ExamRecord> examRecords = examRecordService.list( null);
+        log.info("获取考试记录列表接口调用成功！数据为：{}",examRecords);
+        return Result.success(examRecords);
     }
 } 

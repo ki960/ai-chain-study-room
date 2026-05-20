@@ -59,7 +59,7 @@ public class ExamRecordController {
     @Operation(summary = "获取考试记录详情", description = "根据记录ID获取考试记录的详细信息，包括试卷内容和答题情况")  // API描述
     public Result<ExamRecord> getExamRecordById(
             @Parameter(description = "考试记录ID") @PathVariable Integer id) {
-        ExamRecord examRecord = examService.customGetExamRecordById(id);
+        ExamRecord examRecord = examRecordService.customGetExamRecordById(id);
         log.info("获取试卷详情信息接口调用成功！数据为：{}",examRecord);
         return Result.success(examRecord);
     }

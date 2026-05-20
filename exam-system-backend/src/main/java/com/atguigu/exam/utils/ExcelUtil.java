@@ -95,7 +95,7 @@ public class ExcelUtil {
                             
                             // 判断是否为正确答案
                             char optionLabel = (char) ('A' + j);
-                            boolean isCorrect = correctAnswer != null && correctAnswer.contains(String.valueOf(optionLabel));
+                            boolean isCorrect = (correctAnswer != null && correctAnswer.contains(String.valueOf(optionLabel)));
                             choice.setIsCorrect(isCorrect);
                             
                             choices.add(choice);

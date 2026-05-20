@@ -63,18 +63,6 @@ public class QuestionBatchController {
     }
     
     /**
-     * 从Excel文件批量导入题目[废弃]
-     * @param file Excel文件
-     * @return 导入结果
-     */
-    @PostMapping("/import-excel")  // 处理POST请求
-    @Operation(summary = "从Excel文件批量导入题目", description = "解析Excel文件并将题目批量导入到数据库")  // API描述
-    public Result<String> importFromExcel(
-            @Parameter(description = "Excel文件，包含题目数据") @RequestParam("file") MultipartFile file) {
-        return null;
-    }
-    
-    /**
      * 使用AI生成题目（预览，不入库）
      * @param request AI生成请求参数
      * @return 生成的题目列表
@@ -110,8 +98,9 @@ public class QuestionBatchController {
     @PostMapping("/validate")  // 处理POST请求
     @Operation(summary = "验证题目数据", description = "验证题目数据的完整性和格式正确性，返回验证结果和错误信息")  // API描述
     public Result<String> validateQuestions(@RequestBody List<QuestionImportVo> questions) {
-
-        return Result.error("验证题目数据失败!");
+        questionService.validateQuestions(questions);
+        log.info("验证题目数据成功");
+        return Result.success("验证题目数据成功!");
     }
     
     /**

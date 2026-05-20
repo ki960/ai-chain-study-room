@@ -19,4 +19,6 @@ public interface ExamRecordService extends IService<ExamRecord> {
     void removeExamRecordById(Integer id);
 
     List<ExamRankingVO> customGetRanking(Integer paperId, Integer limit);
-} 
+
+    ExamRecord customGetExamRecordById(Integer id);
+}
